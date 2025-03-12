@@ -1,20 +1,10 @@
-import { cloneTemplate } from "../utils/utils";
-
-export interface IAppLarekApi {
-  cdn: string;
-
-  getProductList: () => Promise<IProduct[]>;
-  getProduct: () => Promise<IProduct>;
-  orderDataProducts: (order: IOrder) => Promise<IOrderResult>;
-}
-
 export interface IProduct {
 	id: string;
   title: string;
-	description: string;
+	description?: string;
   price: number | null;
-  category: string;
-	image: string;	
+  category?: string;
+	image?: string;	
 }
 
 export interface IActions {
@@ -23,37 +13,43 @@ export interface IActions {
 
 export interface IAppState {
   catalog: IProduct[];
-  basket: number;
+  basket: TBasket;
   preview: string | null;
-  order: IOrder | null;
+  order: TOrder;
+
+  formErrors: TFormErrors;
 
   setProducts(items:IProduct[]):void;
-  addProductBasket(item:string):void;
-  deleteProductBasket(item:string):void;
-  getIdProduct(id:string):void;
-  checkIdInbasket(id:string):void;
+  addProductBasket(item:IProduct):void;
+  deleteProductBasket(item: IProduct): void;
+  setPreview(item: IProduct): void;
+  checkIdInbasket(item: IProduct): void;
   clearBasket():void;
-  checkValidAdress():void;
+
+  checkValidAddress():void;
   checkValidContact():void;
   clearInputOrder():void;
-  getTotal():void; 
+  setOrderField(field: keyof TOrder, value: string): void;
+  setContactsField(field: keyof TOrder, value: string): void;
 }
 
-type TPaymentMethod = 'cash'|'card';
 export type TOrderForm = Pick<IOrder, 'payment' | 'address'>;
 export type TContactsForm = Pick<IOrder, 'email' | 'phone'>;
 export type TOrder = Omit<IOrder, 'items' | 'total'>;
+export type TBasket = Pick<IOrder, 'items' | 'total'>;
 
 export interface IOrderResult { 
   price: number;
+  id: string;
 }
 
-interface IOrder {
-  payment?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
-  total?: string | number;
+export interface IOrder {
+  payment: string;
+  address: string;
+  email: string;
+  phone: string;
+  total: number;
+  items: string[];
 }
 
 export type TFormErrors = Partial<Record<keyof IOrder, string>>;
