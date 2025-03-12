@@ -31,10 +31,9 @@ export class Product extends Component<IProduct> {
       }
     }
   }
+  
   set index(value: number) {
-    if (this._indexElement) {
      this._indexElement.textContent = (value + 1).toString();
-    }
   }
 
   set id(value: string) {
