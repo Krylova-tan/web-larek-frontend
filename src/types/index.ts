@@ -39,7 +39,7 @@ export type TOrder = Omit<IOrder, 'items' | 'total'>;
 export type TBasket = Pick<IOrder, 'items' | 'total'>;
 
 export interface IOrderResult { 
-  price: number;
+  total: number;
   id: string;
 }
 

@@ -16,8 +16,8 @@ export class Product extends Component<IProduct> {
     super(container);
 
 		this._title = ensureElement<HTMLElement>('.card__title', container);
-    this._description = container.querySelector('.card__description');
-		this._image = container.querySelector('.card__image');
+    this._description = container.querySelector('.card__text');
+    this._image = container.querySelector('.card__image');
 		this._price = ensureElement<HTMLImageElement>('.card__price', container);
 		this._category = container.querySelector('.card__category');
 		this._button = container.querySelector('.card__button');
@@ -74,14 +74,16 @@ export class Product extends Component<IProduct> {
   set category(value: string) {
     this.setText(this._category, value);
     if (this._category) {
-      this._category.classList.add(
-        `card__category_${
-          categories.get(value) ? categories.get(value) : 'other'
-        }`
-      );
+      Array.from(this._category.classList).forEach(className => {
+        if (className.startsWith('card__category_')) {
+          this._category.classList.remove(className);
+        }
+      });
+      const categoryClass = categories.get(value) ? categories.get(value) : 'other';
+      this._category.classList.add(`card__category_${categoryClass}`);
     }
   }
-
+  
   get category(): string {
     return this._category.textContent || '';
   }

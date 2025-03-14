@@ -178,10 +178,9 @@ events.on('contacts:submit', () => {
 			modal.render({
 				content: success.render(),
 			});
-			success.total = data.price;
+			success.total = data.total;
 			appState.clearBasket();
 			appState.clearInputOrder();
 		})
 		.catch(console.error)
 });
-
